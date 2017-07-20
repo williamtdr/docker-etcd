@@ -15,15 +15,7 @@ else
         echo "Detected new PEER_URLS value of $PEER_URLS"
 fi
 
-# Check for $CLIENT_IP
-if [ -z ${CLIENT_IP+x} ]; then
-        CLIENT_IP="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
-        echo "Using default CLIENT_IP ($CLIENT_IP)"
-else
-        echo "Detected new CLIENT_IP value of $CLIENT_IP"
-fi
-
-ETCD_CMD="/bin/etcd -data-dir=/data -listen-peer-urls=${PEER_URLS} -listen-client-urls=${CLIENT_URLS} -advertise-client-urls=http://${CLIENT_IP}:4001 $*"
+ETCD_CMD="/bin/etcd -data-dir=/data -listen-peer-urls=${PEER_URLS} -listen-client-urls=${CLIENT_URLS} $*"
 echo -e "Running '$ETCD_CMD'\nBEGIN ETCD OUTPUT\n"
 
 exec $ETCD_CMD
